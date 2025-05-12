@@ -4,27 +4,10 @@ from tkinter import ttk, simpledialog
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def graphs(v_data, t_data, M_data, V_data, w_data):
-    import matplotlib.pyplot as plt
-    data_elements = {
-        "Deflection": v_data,
-        "Angle": t_data,
-        "Moment": M_data,
-        "Shear": V_data,
-        "Load": w_data
-    }
-    for data_name, data in data_elements.items():
-        plt.figure(dpi=100)
-        for y_vals, x_vals in data:
-            plt.plot(x_vals, y_vals, color="green", label=data_name)
-        plt.title(data_name)
-        plt.xlabel("x (longitud)")
-        plt.ylabel(data_name)
-        plt.grid(True, linestyle='--', alpha=0.6)
-        plt.legend()
-        plt.tight_layout()
-        plt.autoscale()
-    plt.show()
+
+
     data_elements = {
         "Deflection": v_data,
         "Angle": t_data,
@@ -43,18 +26,19 @@ def graphs(v_data, t_data, M_data, V_data, w_data):
     plt.show()
 
 def array_fill(v, theta, M, V, w, d_range):
-    v_data = [v(i) for i in d_range]
-    t_data = [theta(i) for i in d_range]
-    M_data = [M(i) for i in d_range]
-    V_data = [V(i) for i in d_range]
-    w_data = [w(i) for i in d_range]
-    return [v_data, t_data, M_data, V_data, w_data]
+    v_data_2 = [v(i) for i in d_range]
+    t_data_2 = [theta(i) for i in d_range]
+    M_data_2 = [M(i) for i in d_range]
+    V_data_2 = [V(i) for i in d_range]
+    w_data_2 = [w(i) for i in d_range]
+
+    return [v_data_2, t_data_2, M_data_2, V_data_2, w_data_2]
 
 def fix_support_and_single_load():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    P = float(simpledialog.askstring("Entrada", "Carga puntual P:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L (m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    P = float(simpledialog.askstring("Entrada", "Carga puntual P(N):"))
     v = lambda x: -P/(6*E*I)*(3*L*x**2 - x**3)
     theta = lambda x: -P/(6*E*I)*(6*L*x - 3*x**2)
     M = lambda x: -P*(L - x)
@@ -73,10 +57,10 @@ def fix_support_and_single_load():
     
 
 def fix_support_and_single_moment():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    M0 = float(simpledialog.askstring("Entrada", "Momento M₀:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L (m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    M0 = float(simpledialog.askstring("Entrada", "Momento M₀(Nm):"))
     v = lambda x: M0/(2*E*I)*x**2
     theta = lambda x: M0/(E*I)*x
     M = lambda x: M0
@@ -95,11 +79,11 @@ def fix_support_and_single_moment():
     
 
 def fix_support_and_single_displaced_load():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    P = float(simpledialog.askstring("Entrada", "Carga puntual P:"))
-    a = float(simpledialog.askstring("Entrada", "Distancia a desde empotramiento:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L (m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    P = float(simpledialog.askstring("Entrada", "Carga puntual P(N):"))
+    a = float(simpledialog.askstring("Entrada", "Distancia a desde empotramiento(m):"))
     v1 = lambda x: -P/(6*E*I)*(3*a*x**2 - x**3)
     theta1 = lambda x: -P/(6*E*I)*(6*a*x - 3*x**2)
     M1 = lambda x: -P*(a - x)
@@ -123,10 +107,10 @@ def fix_support_and_single_displaced_load():
     )
 
 def fix_support_and_dist_load():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    q = float(simpledialog.askstring("Entrada", "Carga distribuida q:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L(m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    q = float(simpledialog.askstring("Entrada", "Carga distribuida q (N):"))
     v = lambda x: -q/(24*E*I)*(x**4 - 4*L*x**3 + 6*L**2*x**2)
     theta = lambda x: -q/(24*E*I)*(4*x**3 - 12*L*x**2 + 12*L**2*x)
     M = lambda x: -q*(L - x)**2 / 2
@@ -145,10 +129,10 @@ def fix_support_and_dist_load():
     
 
 def cantilever_triangular_dist_load():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    q = float(simpledialog.askstring("Entrada", "Carga triangular máxima q:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L (m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    q = float(simpledialog.askstring("Entrada", "Carga triangular máxima q (N):"))
     v = lambda x: -q*x**2/(120*L*E*I)*(10*L**3 - 10*L**2*x + 5*L*x**2 - x**3)
     theta = lambda x: -q/(120*L*E*I)*(20*L**3*x - 30*L**2*x**2 + 20*L*x**3 - 5*x**4)
     M = lambda x: -q*(L - x)**3 / (6*L)
@@ -167,11 +151,11 @@ def cantilever_triangular_dist_load():
     
 
 def simply_supported_intermediate_load():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    P = float(simpledialog.askstring("Entrada", "Carga puntual P:"))
-    a = float(simpledialog.askstring("Entrada", "Distancia a desde apoyo izquierdo:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L(m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    P = float(simpledialog.askstring("Entrada", "Carga puntual P(N):"))
+    a = float(simpledialog.askstring("Entrada", "Distancia a desde apoyo izquierdo(m):"))
     b = L - a
     v = lambda x: -P*b*x/(6*L*E*I)*(L**2 - b**2 - x**2)
     theta = lambda x: -P*b/(6*L*E*I)*(L**2 - b**2 - 3*x**2)
@@ -191,10 +175,10 @@ def simply_supported_intermediate_load():
     
 
 def simply_supported_end_moment():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    M0 = float(simpledialog.askstring("Entrada", "Momento extremo M₀:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L(m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    M0 = float(simpledialog.askstring("Entrada", "Momento extremo M₀(Nm):"))
     divisions = int(simpledialog.askstring("Entrada", "Número de divisiones:"))
     v = lambda x: -M0*x/(6*E*I*L)*(L**2 - x**2)
     theta = lambda x: -M0/(6*E*I*L)*(L**2 - 3*x**2)
@@ -214,10 +198,10 @@ def simply_supported_end_moment():
     
 
 def simply_supported_dist_load():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    q = float(simpledialog.askstring("Entrada", "Carga distribuida q:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L(m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    q = float(simpledialog.askstring("Entrada", "Carga distribuida q(m):"))
     v = lambda x: -q*x/(24*E*I)*(x**3 - 2*L*x**2 + L**3)
     theta = lambda x: -q/(24*E*I)*(4*x**3 - 6*L*x**2)
     M = lambda x: q*(L*x - x**2/2)
@@ -236,10 +220,10 @@ def simply_supported_dist_load():
     
 
 def simply_supported_ramped_load():
-    L = float(simpledialog.askstring("Entrada", "Longitud L:"))
-    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E:"))
-    I = float(simpledialog.askstring("Entrada", "Momento de inercia I:"))
-    w0 = float(simpledialog.askstring("Entrada", "Carga máxima w₀:"))
+    L = float(simpledialog.askstring("Entrada", "Longitud L(m):"))
+    E = float(simpledialog.askstring("Entrada", "Módulo de elasticidad E(Pa):"))
+    I = float(simpledialog.askstring("Entrada", "Momento de inercia I(m4):"))
+    w0 = float(simpledialog.askstring("Entrada", "Carga máxima w₀(Nm):"))
     divisions = int(simpledialog.askstring("Entrada", "Número de divisiones:"))
     v = lambda x: -w0*x/(360*E*I*L)*(3*x**4 - 10*L**2*x**2 + 7*L**4)
     theta = lambda x: -w0/(360*E*I*L)*(15*x**4 - 30*L**2*x**2)
